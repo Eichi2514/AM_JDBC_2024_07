@@ -4,8 +4,9 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.util.Scanner;
 
-public class JDBCConnTest {
+public class JDBCInsetTest {
     public static void main(String[] args) {
         Connection conn = null;
         PreparedStatement pstmt = null;
@@ -19,11 +20,13 @@ public class JDBCConnTest {
             String sql = "INSERT INTO article ";
             sql += "SET regDate = NOW(), ";
             sql += "updateDate = NOW(), ";
-            sql += "title = '" + Article.getTitle() + "', ";
-            sql += "`body` = '" + Article.getBody() + "';";
+            sql += "title = CONCAT ('제목', SUBSTRING(RAND() * 1000 FROM 1 FOR 2)), ";
+            sql += "`body` = CONCAT ('제목', SUBSTRING(RAND() * 1000 FROM 1 FOR 2));";
 
             pstmt = conn.prepareStatement(sql);
-            pstmt.executeUpdate();
+
+            int affectedRows = pstmt.executeUpdate();
+            System.out.println("affectedRows : " + affectedRows);
 
         } catch (ClassNotFoundException e) {
             System.out.println("드라이버 로딩 실패" + e);
@@ -47,6 +50,4 @@ public class JDBCConnTest {
         }
 
     }
-
 }
-

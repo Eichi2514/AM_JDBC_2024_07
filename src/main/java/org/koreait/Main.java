@@ -1,18 +1,13 @@
 package org.koreait;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) {
-        JDBCConnTest.main(args);
-
-        System.out.println("== 프로그램 시작 ==");
         List<Article> articles = new ArrayList<>();
+        System.out.println("== 프로그램 시작 ==");
         Scanner sc = new Scanner(System.in);
         int listId = 0;
 
@@ -30,6 +25,9 @@ public class Main {
 
                 Article article = new Article(id, title, body);
                 articles.add(article);
+
+                JDBCConnTest.main(args);
+
                 listId++;
 
                 System.out.println(id + "번 글이 작성되었습니다.");

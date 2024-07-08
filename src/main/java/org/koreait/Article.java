@@ -2,8 +2,8 @@ package org.koreait;
 
 public class Article {
     private int id;
-    private String title;
-    private String body;
+    private static String title;
+    private static String body;
 
     @Override
     public String toString() {
@@ -24,20 +24,20 @@ public class Article {
         this.id = id;
     }
 
-    public String getTitle() {
+    public static String getTitle() {
         return title;
     }
 
-    public void setTitle(String title) {
-        this.title = title;
+    public static void setTitle(String title) {
+        title = title;
     }
 
-    public String getBody() {
+    public static String getBody() {
         return body;
     }
 
-    public void setBody(String body) {
-        this.body = body;
+    public static void setBody(String body) {
+        body = body;
     }
 
 }
