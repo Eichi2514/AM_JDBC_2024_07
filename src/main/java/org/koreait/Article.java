@@ -5,6 +5,11 @@ public class Article {
     private String title;
     private String body;
 
+    @Override
+    public String toString() {
+        return id + " / " + title + " / " + body;
+    }
+
     Article(int id, String title, String body) {
         this.id = id;
         this.title = title;

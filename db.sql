@@ -1,0 +1,14 @@
+DROP DATABASE IF EXISTS `AM_JDBC_2024_07`;
+CREATE DATABASE `AM_JDBC_2024_07`;
+USE `AM_JDBC_2024_07`;
+
+SHOW TABLES;
+
+CREATE TABLE users (
+                       id INT PRIMARY KEY AUTO_INCREMENT,
+                       `Title` VARCHAR(25) NOT NULL,
+                       `body` TEXT NOT NULL
+);
+
+SELECT *
+FROM users
