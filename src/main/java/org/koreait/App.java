@@ -4,11 +4,11 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-public class JDBC {
+public class App {
     static Scanner sc = new Scanner(System.in);
     static ResultSet rs = null;
 
-    public static void main(String com) {
+    public static void run(String com) {
 
         int id = 1;
         int numberChack = 0;

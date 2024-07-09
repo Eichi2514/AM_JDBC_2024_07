@@ -1,8 +1,6 @@
 package org.koreait;
 
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Scanner;
 
 public class Main {
@@ -14,6 +12,7 @@ public class Main {
         while (true) {
             System.out.print("명령어) ");
             String com = sc.nextLine();
+
             String[] coms = com.split(" ");
             String Action = coms[0];
 
@@ -30,7 +29,7 @@ public class Main {
                 sc.close();
                 break;
             }else if (Action.equals("article") || Action.equals("?")) {
-                JDBC.main(com);
+                App.run(com);
             } else {
                 System.out.println("잘못된 명령어입니다.");
             }System.out.println();
