@@ -1,20 +1,40 @@
 package org.koreait;
 
 public class Article {
-    private int id;
-    private static String title;
-    private static String body;
+    int id;
+    String regDate;
+    String updateDate;
+    String title;
+    String body;
 
-    @Override
-    public String toString() {
-        return id + " / " + title + " / " + body;
+    Article(){
+
     }
 
-    Article(int id, String title, String body) {
+    public Article(int id, String regDate, String updateDate, String title, String body) {
         this.id = id;
+        this.regDate = regDate;
+        this.updateDate = updateDate;
         this.title = title;
         this.body = body;
     }
+
+    public String getRegDate() {
+        return regDate;
+    }
+
+    public void setRegDate(String regDate) {
+        this.regDate = regDate;
+    }
+
+    public String getUpdateDate() {
+        return updateDate;
+    }
+
+    public void setUpdateDate(String updateDate) {
+        this.updateDate = updateDate;
+    }
+
 
     public int getId() {
         return id;
@@ -24,20 +44,20 @@ public class Article {
         this.id = id;
     }
 
-    public static String getTitle() {
+    public String getTitle() {
         return title;
     }
 
-    public static void setTitle(String title) {
-        title = title;
+    public void setTitle(String title) {
+        this.title = title;
     }
 
-    public static String getBody() {
+    public String getBody() {
         return body;
     }
 
-    public static void setBody(String body) {
-        body = body;
+    public void setBody(String body) {
+        this.body = body;
     }
 
 }

@@ -16,14 +16,6 @@ public class JDBCConnTest {
             conn = DriverManager.getConnection(url, "root", "");
             System.out.println("연결 성공!");
 
-            String sql = "INSERT INTO article ";
-            sql += "SET regDate = NOW(), ";
-            sql += "updateDate = NOW(), ";
-            sql += "title = '" + Article.getTitle() + "', ";
-            sql += "`body` = '" + Article.getBody() + "';";
-
-            pstmt = conn.prepareStatement(sql);
-            pstmt.executeUpdate();
 
         } catch (ClassNotFoundException e) {
             System.out.println("드라이버 로딩 실패" + e);
@@ -32,13 +24,6 @@ public class JDBCConnTest {
         } finally {
             try {
                 if (conn != null && !conn.isClosed()) {
-                    conn.close();
-                }
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-            try {
-                if (pstmt != null && !conn.isClosed()) {
                     conn.close();
                 }
             } catch (SQLException e) {
