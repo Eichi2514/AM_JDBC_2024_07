@@ -15,6 +15,8 @@ CREATE TABLE article (
 SELECT *
 FROM article;
 
+SELECT id, regDate, updateDate, title, `body` FROM article;
+
 SELECT NOW();
 
 SELECT '제목1';
@@ -28,3 +30,9 @@ SET regDate = NOW(),
     updateDate = NOW(),
     title = CONCAT ('제목', SUBSTRING(RAND() * 1000 FROM 1 FOR 2)),
     `body` = CONCAT ('내용', SUBSTRING(RAND() * 1000 FROM 1 FOR 2));
+
+UPDATE article
+SET title = 'qwe',
+    `body` = 'qwe',
+    updateDate = NOW()
+WHERE id = 2;

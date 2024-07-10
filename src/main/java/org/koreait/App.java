@@ -15,6 +15,7 @@ public class App {
         Connection conn = null;
         PreparedStatement pstmt = null;
         String sql = null;
+        boolean chack = true;
 
         try {
             Class.forName("org.mariadb.jdbc.Driver");
@@ -22,7 +23,8 @@ public class App {
             conn = DriverManager.getConnection(url, "root", "");
 //            System.out.println("연결 성공!");
 
-            sql = "SELECT * ";
+
+            sql = "SELECT id, regDate, updateDate, title, body ";
             sql += "FROM article ";
             sql += "ORDER BY id DESC;";
 
@@ -31,6 +33,7 @@ public class App {
             rs = stmt.executeQuery(sql);
 
             ArrayList<Article> articles = new ArrayList<>();
+
 
             while (rs.next()) {
                 Article article = new Article();
@@ -41,17 +44,15 @@ public class App {
                 article.setBody(rs.getString("body"));
                 articles.add(article);
             }
-            if (articles.size() > 0) {
-                id = articles.get(0).getId() + 1;
-            }
 
             if (com.equals("article write") || com.equals("? 1")) {
+                id = Number.number();
+
                 System.out.println("== 게시글 작성 ==");
                 System.out.print("제목 : ");
                 String title = sc.nextLine();
                 System.out.print("내용 : ");
                 String body = sc.nextLine();
-                System.out.println(id + "번 글이 작성되었습니다.");
                 sql = "INSERT INTO article ";
                 sql += "SET regDate = NOW(), ";
                 sql += "updateDate = NOW(), ";
@@ -59,6 +60,8 @@ public class App {
                 sql += "`body` = '" + body + "';";
                 pstmt = conn.prepareStatement(sql);
                 pstmt.executeUpdate();
+                chack = false;
+                System.out.println(id + "번 글이 작성되었습니다.");
 
             } else if (com.equals("article list") || com.equals("? 2")) {
                 if (articles.size() <= 0) {
@@ -73,10 +76,10 @@ public class App {
                                 articles.get(i).getBody());
                     }
                 }
+                chack = false;
             } else if (com.contains("article modify") || com.contains("? 3")) {
                 String[] coms = com.split(" ");
                 numberChack = Integer.parseInt(coms[2]);
-                boolean chack = true;
 
                 for (int i = 0; i < articles.size(); i++) {
                     Article article = articles.get(i);
@@ -101,11 +104,9 @@ public class App {
                         chack = false;
                     }
                 }
-                if (chack) System.out.println(numberChack + "번 게시글이 존재하지 않아 수정할 수 없습니다.");
             } else if (com.contains("article delete") || com.contains("? 4")) {
                 String[] coms = com.split(" ");
                 numberChack = Integer.parseInt(coms[2]);
-                boolean chack = true;
                 for (int i = 0; i < articles.size(); i++) {
                     Article article = articles.get(i);
                     if (article.getId() == numberChack) {
@@ -120,11 +121,9 @@ public class App {
                         chack = false;
                     }
                 }
-                if (chack) System.out.println(numberChack + "번 게시글이 존재하지 않아 삭제할 수 없습니다.");
             } else if (com.contains("article diteil") || com.contains("? 5")) {
                 String[] coms = com.split(" ");
                 numberChack = Integer.parseInt(coms[2]);
-                boolean chack = true;
 
                 for (int i = 0; i < articles.size(); i++) {
                     Article article = articles.get(i);
@@ -136,9 +135,10 @@ public class App {
                         System.out.println("내용 : " + article.getBody());
                         chack = false;
                     }
-                }if (chack) System.out.println(numberChack + "번 게시글이 존재하지 않아 불러올 수 없습니다.");
+                }
 
             }
+            if (chack) System.out.println(numberChack + "번 게시글이 존재하지 않습니다.");
 
         } catch (ClassNotFoundException e) {
             System.out.println("드라이버 로딩 실패" + e);
@@ -160,8 +160,27 @@ public class App {
                 e.printStackTrace();
             }
         }
-
     }
+}
+class Number{
+    static int number() throws SQLException, ClassNotFoundException {
+        Class.forName("org.mariadb.jdbc.Driver");
+        String url = "jdbc:mariadb://127.0.0.1:3306/AM_JDBC_2024_07?useUnicode=true&characterEncoding=utf8&autoReconnect=true&serverTimezone=Asia/Seoul";
+        Connection conn = DriverManager.getConnection(url, "root", "");
 
+
+        int id = 0;
+        String sql2 = "SELECT MAX(id)+1 ";
+        sql2 += "FROM article;";
+
+        Statement stmt2 = conn.createStatement();
+
+        ResultSet rs2 = stmt2.executeQuery(sql2);
+
+        while (rs2.next()) {
+            id = rs2.getInt("MAX(id)+1");}
+
+        return id;
+    }
 }
 
