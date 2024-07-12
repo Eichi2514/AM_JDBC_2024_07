@@ -1,4 +1,6 @@
-package org.koreait;
+package org.koreait.Test;
+
+import org.koreait.Article;
 
 import java.sql.*;
 import java.util.ArrayList;
