@@ -1,5 +1,6 @@
 package org.koreait.Controller;
 
+import org.koreait.Article;
 import org.koreait.Member;
 
 import java.sql.*;
@@ -120,6 +121,7 @@ public class MemberController {
                 rs = stmt.executeQuery(sql);
 
                 System.out.print("회원가입이 완료되었습니다");
+                System.out.print("");
             } else if (cmd.equals("member login") || cmd.equals("m 2")) {
                 String id;
                 String pw;
@@ -136,9 +138,9 @@ public class MemberController {
                                 System.out.print("PW : ");
                                 pw = sc.nextLine();
                                 if (pw.equals(members.get(i).getUserPw())) {
-                                    System.out.println("로그인 되었습니다");
                                     loginChacks = new ArrayList<>();
                                     loginChacks.add(id);
+                                    System.out.println(members.get(i).getUserName()+"님 환영합니다");
                                     return;
                                 } else {
                                     System.out.println("비밀번호를 다시 확인해주세요");
@@ -159,7 +161,22 @@ public class MemberController {
                     System.out.println("로그아웃 되었습니다");
                     loginChacks = null;
                 } else System.out.println("로그아웃 상태입니다");
-            }
+
+            } else if (cmd.equals("member profile") || cmd.equals("m 4")) {
+                if (loginChacks == null){
+                    System.out.println("로그인이 필요한 서비스 입니다");
+                    return;
+                }
+                for (int i = 0; i < members.size(); i++) {
+                    Member member = members.get(i);
+                    if (loginChacks.get(0).equals(member.getUserId())) {
+                        System.out.println("가입날짜 : " + member.getRegDate().substring(0, 19));
+                        System.out.println("ID : " + member.getUserId());
+                        System.out.println("PW : " + member.getUserPw());
+                        System.out.println("이름 : " + member.getUserName());
+                    }
+                }
+            } else System.out.println("잘못된 명령어입니다");
 
         } catch (ClassNotFoundException e) {
             System.out.println("드라이버 로딩 실패" + e);

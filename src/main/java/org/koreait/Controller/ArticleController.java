@@ -15,7 +15,7 @@ public class ArticleController {
     static ResultSet rs = null;
     static String loginChack = null;
 
-    public static void run(String cmd) {
+    public static void run(String cmd) throws SQLException, ClassNotFoundException {
 
         if (loginChacks == null) {
             System.out.println("로그인이 필요한 서비스 입니다");
@@ -30,6 +30,7 @@ public class ArticleController {
         PreparedStatement pstmt = null;
         String sql = null;
         boolean chack = true;
+
 
         try {
             Class.forName("org.mariadb.jdbc.Driver");
@@ -60,7 +61,6 @@ public class ArticleController {
             }
 
             if (cmd.equals("article write") || cmd.equals("a 1")) {
-                id = Number.number();
 
                 System.out.println("== 게시글 작성 ==");
                 System.out.print("제목 : ");
@@ -76,6 +76,7 @@ public class ArticleController {
                 pstmt = conn.prepareStatement(sql);
                 pstmt.executeUpdate();
                 chack = false;
+                id = Number.number();
                 System.out.println(id + "번 글이 작성되었습니다.");
 
             } else if (cmd.equals("article list") || cmd.equals("a 2")) {
@@ -94,8 +95,7 @@ public class ArticleController {
                 }
                 chack = false;
             } else if (cmd.contains("article modify") || cmd.contains("a 3")) {
-                String[] coms = cmd.split(" ");
-                numberChack = Integer.parseInt(coms[2]);
+                numberChack = SQL(cmd);
 
                 for (int i = 0; i < articles.size(); i++) {
                     Article article = articles.get(i);
@@ -126,8 +126,7 @@ public class ArticleController {
                     }
                 }
             } else if (cmd.contains("article delete") || cmd.contains("a 4")) {
-                String[] coms = cmd.split(" ");
-                numberChack = Integer.parseInt(coms[2]);
+                numberChack = SQL(cmd);
                 for (int i = 0; i < articles.size(); i++) {
                     Article article = articles.get(i);
                     if (article.getId() == numberChack) {
@@ -146,9 +145,7 @@ public class ArticleController {
                     }
                 }
             } else if (cmd.contains("article diteil") || cmd.contains("a 5")) {
-                String[] coms = cmd.split(" ");
-                numberChack = Integer.parseInt(coms[2]);
-
+                numberChack = SQL(cmd);
                 for (int i = 0; i < articles.size(); i++) {
                     Article article = articles.get(i);
                     if (article.getId() == numberChack) {
@@ -162,7 +159,7 @@ public class ArticleController {
                     }
                 }
 
-            }
+            } else System.out.println("잘못된 명령어입니다");
             if (chack) System.out.println(numberChack + "번 게시글이 존재하지 않습니다.");
 
         } catch (ClassNotFoundException e) {
@@ -186,6 +183,17 @@ public class ArticleController {
             }
         }
     }
+
+    private static int SQL(String cmd) {
+        int numberChack;
+        try {
+            String[] coms = cmd.split(" ");
+            numberChack = Integer.parseInt(coms[2]);
+            return numberChack;
+        } catch (NumberFormatException ex) {
+            return 0;
+        }
+    }
 }
 
 class Number {
@@ -196,7 +204,7 @@ class Number {
 
 
         int id = 0;
-        String sql2 = "SELECT MAX(id)+1 ";
+        String sql2 = "SELECT MAX(id) ";
         sql2 += "FROM article;";
 
         Statement stmt2 = conn.createStatement();
@@ -204,7 +212,7 @@ class Number {
         ResultSet rs2 = stmt2.executeQuery(sql2);
 
         while (rs2.next()) {
-            id = rs2.getInt("MAX(id)+1");
+            id = rs2.getInt("MAX(id)");
         }
 
         return id;
