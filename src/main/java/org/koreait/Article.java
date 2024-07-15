@@ -4,17 +4,18 @@ public class Article {
     int id;
     String regDate;
     String updateDate;
+    String loginId;
     String title;
     String body;
 
-    public Article(){
-
+    public Article() {
     }
 
-    public Article(int id, String regDate, String updateDate, String title, String body) {
+    public Article(int id, String regDate, String updateDate, String loginId, String title, String body) {
         this.id = id;
         this.regDate = regDate;
         this.updateDate = updateDate;
+        this.loginId = loginId;
         this.title = title;
         this.body = body;
     }
@@ -60,4 +61,11 @@ public class Article {
         this.body = body;
     }
 
+    public String getLoginId() {
+        return loginId;
+    }
+
+    public void setLoginId(String loginId) {
+        this.loginId = loginId;
+    }
 }

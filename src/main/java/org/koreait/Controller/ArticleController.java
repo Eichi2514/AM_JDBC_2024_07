@@ -1,16 +1,28 @@
 package org.koreait.Controller;
 
 import org.koreait.Article;
+import org.koreait.Member;
 
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Scanner;
+
+import static org.koreait.Controller.MemberController.loginChacks;
 
 public class ArticleController {
     static Scanner sc = new Scanner(System.in);
     static ResultSet rs = null;
+    static String loginChack = null;
 
     public static void run(String cmd) {
+
+        if (loginChacks == null) {
+            System.out.println("로그인이 필요한 서비스 입니다");
+            return;
+        }else {
+            loginChack = loginChacks.get(0);
+        }
 
         int id = 1;
         int numberChack = 0;
@@ -26,7 +38,7 @@ public class ArticleController {
 //            System.out.println("연결 성공!");
 
 
-            sql = "SELECT id, regDate, updateDate, title, body ";
+            sql = "SELECT id, regDate, updateDate, loginId, title, body ";
             sql += "FROM article ";
             sql += "ORDER BY id DESC;";
 
@@ -36,12 +48,12 @@ public class ArticleController {
 
             ArrayList<Article> articles = new ArrayList<>();
 
-
             while (rs.next()) {
                 Article article = new Article();
                 article.setId(rs.getInt("id"));
                 article.setRegDate(rs.getString("regDate"));
                 article.setUpdateDate(rs.getString("updateDate"));
+                article.setLoginId(rs.getString("loginId"));
                 article.setTitle(rs.getString("title"));
                 article.setBody(rs.getString("body"));
                 articles.add(article);
@@ -58,6 +70,7 @@ public class ArticleController {
                 sql = "INSERT INTO article ";
                 sql += "SET regDate = NOW(), ";
                 sql += "updateDate = NOW(), ";
+                sql += "loginId = '" + loginChack + "', ";
                 sql += "title = '" + title + "', ";
                 sql += "`body` = '" + body + "';";
                 pstmt = conn.prepareStatement(sql);
@@ -70,11 +83,12 @@ public class ArticleController {
                     System.out.println("작성된 게시글이 없습니다.");
                 } else {
                     System.out.println("== 게시글 목록 ==");
-                    System.out.println("번호 / 제목  / 내용");
+                    System.out.println("번호 / 작성자 / 제목  / 내용");
 
                     for (int i = 0; i < articles.size(); i++) {
                         System.out.println(articles.get(i).getId() + "    / " +
-                                articles.get(i).getTitle() + " / " +
+                                articles.get(i).getLoginId() + "    / " +
+                                articles.get(i).getTitle() + "    / " +
                                 articles.get(i).getBody());
                     }
                 }
@@ -86,6 +100,10 @@ public class ArticleController {
                 for (int i = 0; i < articles.size(); i++) {
                     Article article = articles.get(i);
                     if (article.getId() == numberChack) {
+                        if (!loginChack.equals(article.getLoginId())) {
+                            System.out.println("다른 사람의 게시글은 수정할 수 없습니다");
+                            return;
+                        }
                         System.out.println("제목(기존) : " + articles.get(i).getTitle());
                         System.out.println("내용(기존) : " + articles.get(i).getBody());
                         System.out.print("제목 : ");
@@ -94,7 +112,8 @@ public class ArticleController {
                         String body = sc.nextLine();
 
                         sql = "UPDATE article ";
-                        sql += "SET title = '" + title + "', ";
+                        sql += "SET loginId = '" + loginChack + "', ";
+                        sql += "title = '" + title + "', ";
                         sql += "`body` = '" + body + "', ";
                         sql += "updateDate = NOW() ";
                         sql += "WHERE id = " + numberChack + ";";
@@ -112,7 +131,10 @@ public class ArticleController {
                 for (int i = 0; i < articles.size(); i++) {
                     Article article = articles.get(i);
                     if (article.getId() == numberChack) {
-
+                        if (!loginChack.equals(article.getLoginId())) {
+                            System.out.println("다른 사람의 게시글은 삭제할 수 없습니다");
+                            return;
+                        }
                         sql = "DELETE FROM article ";
                         sql += "WHERE id = " + numberChack + ";";
 
@@ -133,6 +155,7 @@ public class ArticleController {
                         System.out.println("번호 : " + article.getId());
                         System.out.println("작성날짜 : " + article.getRegDate().substring(0, 19));
                         System.out.println("수정날짜 : " + article.getUpdateDate().substring(0, 19));
+                        System.out.println("작성자 : " + article.getLoginId());
                         System.out.println("제목 : " + article.getTitle());
                         System.out.println("내용 : " + article.getBody());
                         chack = false;
@@ -164,7 +187,8 @@ public class ArticleController {
         }
     }
 }
-class Number{
+
+class Number {
     static int number() throws SQLException, ClassNotFoundException {
         Class.forName("org.mariadb.jdbc.Driver");
         String url = "jdbc:mariadb://127.0.0.1:3306/AM_JDBC_2024_07?useUnicode=true&characterEncoding=utf8&autoReconnect=true&serverTimezone=Asia/Seoul";
@@ -180,7 +204,8 @@ class Number{
         ResultSet rs2 = stmt2.executeQuery(sql2);
 
         while (rs2.next()) {
-            id = rs2.getInt("MAX(id)+1");}
+            id = rs2.getInt("MAX(id)+1");
+        }
 
         return id;
     }

@@ -1,5 +1,7 @@
 package org.koreait;
 
+import org.koreait.Controller.Login;
+
 public class Member {
     int id;
     String regDate;

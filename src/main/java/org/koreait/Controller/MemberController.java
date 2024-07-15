@@ -9,7 +9,7 @@ import java.util.Scanner;
 public class MemberController {
     static Scanner sc = new Scanner(System.in);
     static ResultSet rs = null;
-    static boolean loginChack = false;
+    static ArrayList<String> loginChacks = null;
 
     public static void run(String cmd) {
         Connection conn = null;
@@ -123,8 +123,10 @@ public class MemberController {
             } else if (cmd.equals("member login") || cmd.equals("m 2")) {
                 String id;
                 String pw;
-                if (loginChack) System.out.println("로그인 상태입니다");
-                while (!loginChack) {
+                boolean loginIdChack = true;
+
+                if (loginChacks != null) System.out.println("로그인 상태입니다");
+                while (loginChacks == null) {
                     System.out.print("ID : ");
                     id = sc.nextLine();
                     for (int i = 0; i < members.size(); i++) {
@@ -135,20 +137,27 @@ public class MemberController {
                                 pw = sc.nextLine();
                                 if (pw.equals(members.get(i).getUserPw())) {
                                     System.out.println("로그인 되었습니다");
-                                    loginChack = true;
-                                    break;
+                                    loginChacks = new ArrayList<>();
+                                    loginChacks.add(id);
+                                    return;
                                 } else {
                                     System.out.println("비밀번호를 다시 확인해주세요");
-                                    System.out.println("          ("+j+"/3)");
+                                    System.out.println("          (" + j + "/3)");
+                                    if (j >= 3) {
+                                        System.out.println("로그인에 실패했습니다");
+                                        return;
+                                    }
                                 }
                             }
-                        } else System.out.println("아이디가 존재하지 않습니다");
+                        }
                     }
+                    System.out.println("아이디가 존재하지 않습니다");
+
                 }
             } else if (cmd.equals("member logout") || cmd.equals("m 3")) {
-                if (loginChack) {
+                if (loginChacks != null) {
                     System.out.println("로그아웃 되었습니다");
-                    loginChack = false;
+                    loginChacks = null;
                 } else System.out.println("로그아웃 상태입니다");
             }
 
@@ -174,3 +183,4 @@ public class MemberController {
         }
     }
 }
+

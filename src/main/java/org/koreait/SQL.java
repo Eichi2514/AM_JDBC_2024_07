@@ -25,4 +25,5 @@ public class SQL {
         this.title = title;
         this.body = body;
     }
+
 }
