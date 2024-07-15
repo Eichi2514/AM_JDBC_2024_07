@@ -17,16 +17,20 @@ public class App {
             String[] cmds = cmd.split(" ");
             String Action = cmds[0];
 
-            if (cmd.equals("help") || cmd.equals("a")) {
+            if (cmd.equals("help") || cmd.equals("a") || cmd.equals("m")) {
                 System.out.println("0)      exit              : 프로그램 종료");
-                System.out.println("a1) article write          : 글 작성");
-                System.out.println("a2) article list           : 글 목록");
-                System.out.println("a3) article modify + 번호  : 글 수정");
-                System.out.println("a4) article delete + 번호  : 글 삭제");
-                System.out.println("a5) article diteil + 번호  : 글 상세보기");
-                System.out.println("m1) member join          : 회원가입");
+                System.out.println("=======================================");
+                System.out.println("1) article write          : 글 작성");
+                System.out.println("2) article list           : 글 목록");
+                System.out.println("3) article modify + 번호  : 글 수정");
+                System.out.println("4) article delete + 번호  : 글 삭제");
+                System.out.println("5) article diteil + 번호  : 글 상세보기");
+                System.out.println("=======================================");
+                System.out.println("1) member join            : 회원가입");
+                System.out.println("2) member login           : 로그인");
+                System.out.println("3) member logout          : 로그아웃");
 
-            } else if (cmd.equals("exit") || cmd.equals("a 0")) {
+            } else if (cmd.equals("exit") || cmd.equals("0")) {
                 System.out.println("== 프로그램 종료 ==");
                 sc.close();
                 break;

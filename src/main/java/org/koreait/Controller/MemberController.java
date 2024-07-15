@@ -9,6 +9,7 @@ import java.util.Scanner;
 public class MemberController {
     static Scanner sc = new Scanner(System.in);
     static ResultSet rs = null;
+    static boolean loginChack = false;
 
     public static void run(String cmd) {
         Connection conn = null;
@@ -66,7 +67,8 @@ public class MemberController {
                                 break;
                             } else IdChack = true;
                         }
-                    } if(IdChack) break;
+                    }
+                    if (IdChack) break;
                 }
 
                 while (true) {
@@ -120,14 +122,34 @@ public class MemberController {
                 System.out.print("회원가입이 완료되었습니다");
             } else if (cmd.equals("member login") || cmd.equals("m 2")) {
                 String id;
-                System.out.println("ID : ");
-                id = sc.nextLine();
-                for (int i = 0; i < members.size(); i++) {
-                    Member member = members.get(i);
-                    if (id.equals(members.get(i).getUserId())) {
-
+                String pw;
+                if (loginChack) System.out.println("로그인 상태입니다");
+                while (!loginChack) {
+                    System.out.print("ID : ");
+                    id = sc.nextLine();
+                    for (int i = 0; i < members.size(); i++) {
+                        Member member = members.get(i);
+                        if (id.equals(members.get(i).getUserId())) {
+                            for (int j = 1; j <= 3; j++) {
+                                System.out.print("PW : ");
+                                pw = sc.nextLine();
+                                if (pw.equals(members.get(i).getUserPw())) {
+                                    System.out.println("로그인 되었습니다");
+                                    loginChack = true;
+                                    break;
+                                } else {
+                                    System.out.println("비밀번호를 다시 확인해주세요");
+                                    System.out.println("          ("+j+"/3)");
+                                }
+                            }
+                        } else System.out.println("아이디가 존재하지 않습니다");
                     }
                 }
+            } else if (cmd.equals("member logout") || cmd.equals("m 3")) {
+                if (loginChack) {
+                    System.out.println("로그아웃 되었습니다");
+                    loginChack = false;
+                } else System.out.println("로그아웃 상태입니다");
             }
 
         } catch (ClassNotFoundException e) {
