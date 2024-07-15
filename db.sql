@@ -30,8 +30,8 @@ SELECT SUBSTRING(RAND() * 1000 FROM 1 FOR 2);
 INSERT INTO article
 SET regDate = NOW(),
     updateDate = NOW(),
-    title = CONCAT ('제목', SUBSTRING(RAND() _ 1000 FROM 1 FOR 2)),
-    `body` = CONCAT ('내용', SUBSTRING(RAND() _ 1000 FROM 1 FOR 2));
+    title = CONCAT ('제목', SUBSTRING(RAND()*1000 FROM 1 FOR 2)),
+    `body` = CONCAT ('내용', SUBSTRING(RAND()*1000 FROM 1 FOR 2));
 
 UPDATE article
 SET title = 'qwe',
